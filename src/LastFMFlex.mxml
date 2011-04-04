@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	themeColor="#1796E6" 
+	backgroundGradientAlphas="[1.0, 1.0]" 
+	backgroundGradientColors="[#FFFFFF, #F4F4F4]"
+	creationComplete="init()"
+	>
+	<mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+            import _classes.display.LastFMArtistGraph;
+
+			private var graph:LastFMArtistGraph;
+			private var graphActive:Boolean = false;
+			private function init():void
+			{
+				container.alpha = 0;
+			}
+            // Clear the form and reset validation.
+			private function onSubmitHandler():void
+			{
+				if (usernameInput.text != "")
+				{
+					container.alpha = 1;
+					graph = new LastFMArtistGraph(usernameInput.text, container.width, container.height);
+					container.addChild(graph);
+					graphActive = true;
+				}
+				else
+				{
+					errorLabel.text = "You must enter a username!";
+				}
+			}
+			private function onResize():void
+			{
+				if (graphActive)
+				{
+					graph.right.px = container.width;
+					graph.bottom.py = container.height;
+					graph.bottom.width = container.width * 2;
+				}
+			}
+        ]]>
+    </mx:Script>
+    <mx:Container id="container" width="100%" height="100%" resize="onResize()" />
+	<mx:TextInput x="196" y="38" borderStyle="inset" borderThickness="1" fontSize="18" width="176.70352" height="29.8" fontFamily="Arial" fontWeight="bold" id="usernameInput"/>
+	<mx:Label x="194" y="72" id="errorLabel" color="#FF0000"/>
+	<mx:Label x="50" y="43" text="Last.fm username:" fontFamily="Arial" fontSize="14" fontWeight="bold" color="#BDBDBD"/>
+	<mx:Button x="380.7" y="42" label="Load" id="submitButton" click="onSubmitHandler();"/>
+	
+</mx:Application>
